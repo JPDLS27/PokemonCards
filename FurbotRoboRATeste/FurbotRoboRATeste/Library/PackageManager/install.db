@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "packages": {
+    "com.ptc.vuforia.engine": {
+      "tarball": {
+        "hash": "7cd44775a6dc3ace21c1aed0ce437088",
+        "mtime": 1710396836000,
+        "size": 139976826,
+        "localPath": "C:\\Users\\joalima\\Documents\\GitHub\\LDTT_RealidadeVirtual\\FurbotRoboRA\\__Outros\\FurbotRoboRATeste\\FurbotRoboRATeste\\Packages\\com.ptc.vuforia.engine-10.22.5.tgz"
+      }
+    }
+  }
+}
