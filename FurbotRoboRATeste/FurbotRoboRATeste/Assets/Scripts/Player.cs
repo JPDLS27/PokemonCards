@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float blockSize = 0.1f; // Tamanho do bloco no plano
+    public float blockSizeY = 1.0f; // Tamanho do bloco no plano Y
+     public float blockSizeX = 0.8f; // Tamanho do bloco no plano X
     public float moveSpeed = 1.0f; // Velocidade de transição
 
     private bool isMoving = false;
@@ -32,7 +33,7 @@ public class Player : MonoBehaviour
     {
         if (!isMoving)
         {
-            targetLocalPosition += new Vector3(0, 0, blockSize);
+            targetLocalPosition += new Vector3(0, 0, blockSizeY);
             isMoving = true;
         }
     }
@@ -41,7 +42,7 @@ public class Player : MonoBehaviour
     {
         if (!isMoving)
         {
-            targetLocalPosition += new Vector3(0, 0, -blockSize);
+            targetLocalPosition += new Vector3(0, 0, -blockSizeY);
             isMoving = true;
         }
     }
@@ -50,7 +51,7 @@ public class Player : MonoBehaviour
     {
         if (!isMoving)
         {
-            targetLocalPosition += new Vector3(-blockSize, 0, 0);
+            targetLocalPosition += new Vector3(-blockSizeX, 0, 0);
             isMoving = true;
         }
     }
@@ -59,7 +60,7 @@ public class Player : MonoBehaviour
     {
         if (!isMoving)
         {
-            targetLocalPosition += new Vector3(blockSize, 0, 0);
+            targetLocalPosition += new Vector3(blockSizeX, 0, 0);
             isMoving = true;
         }
     }
