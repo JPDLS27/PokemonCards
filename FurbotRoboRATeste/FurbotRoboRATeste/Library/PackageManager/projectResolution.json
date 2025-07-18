@@ -25,6 +25,22 @@
       "version": "1.0.0",
       "source": "builtin"
     },
+    "com.unity.2d.tilemap@1.0.0": {
+      "name": "com.unity.2d.tilemap",
+      "resolvedPath": "C:\\Users\\joalima\\Documents\\GitHub\\LDTT_RealidadeVirtual\\FurbotRoboRA\\__Outros\\FurbotRoboRATeste\\FurbotRoboRATeste\\Library\\PackageCache\\com.unity.2d.tilemap",
+      "fingerprint": "90fc3d022e139285a361c6ed808cb991b4d07184",
+      "editorCompatibility": "2019.2.0a1",
+      "version": "1.0.0",
+      "source": "builtin"
+    },
+    "com.unity.2d.tilemap.extras@4.1.0": {
+      "name": "com.unity.2d.tilemap.extras",
+      "resolvedPath": "C:\\Users\\joalima\\Documents\\GitHub\\LDTT_RealidadeVirtual\\FurbotRoboRA\\__Outros\\FurbotRoboRATeste\\FurbotRoboRATeste\\Library\\PackageCache\\com.unity.2d.tilemap.extras",
+      "fingerprint": "13634da7dbe06c39bac6bbe2d1a166cf91f58ad7",
+      "editorCompatibility": "6000.0.0a1",
+      "version": "4.1.0",
+      "source": "registry"
+    },
     "com.unity.collab-proxy@2.8.2": {
       "name": "com.unity.collab-proxy",
       "resolvedPath": "C:\\Users\\joalima\\Documents\\GitHub\\LDTT_RealidadeVirtual\\FurbotRoboRA\\__Outros\\FurbotRoboRATeste\\FurbotRoboRATeste\\Library\\PackageCache\\com.unity.collab-proxy",

@@ -1,67 +1,148 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(BoxCollider), typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
-    public float blockSizeY = 1.0f; // Tamanho do bloco no plano Y
-     public float blockSizeX = 0.8f; // Tamanho do bloco no plano X
-    public float moveSpeed = 1.0f; // Velocidade de transição
+    [Header("Movimentação")]
+    public float blockSizeY = 1.0f;
+    public float blockSizeX = 0.7f;
+    public float moveSpeed = 1.0f;
 
     private bool isMoving = false;
     private Vector3 targetLocalPosition;
+    private Vector3 lastLocalPosition;
+    private bool reverting = false;
+
+    [Header("Status")]
+
+    [SerializeField]
+    private bool isElectrified = false;
+    
+    [SerializeField]
+    private bool isWet = false;
 
     private void Start()
     {
-        // Armazena a posição local inicial
         targetLocalPosition = transform.localPosition;
+        lastLocalPosition = targetLocalPosition;
     }
 
-    void Update()
+    private void Update()
     {
-        if (isMoving)
+        HandleMovement();
+    }
+
+    #region Movimentação
+
+    public void MoveUp() => TryMove(Vector3.forward);
+    public void MoveDown() => TryMove(Vector3.back);
+    public void MoveLeft() => TryMove(Vector3.left);
+    public void MoveRight() => TryMove(Vector3.right);
+
+    private void TryMove(Vector3 worldDirection)
+    {
+        if (isMoving || reverting) return;
+
+        lastLocalPosition = targetLocalPosition;
+
+        Vector3 localDirection = transform.parent.InverseTransformDirection(worldDirection);
+        localDirection.x *= blockSizeX;
+        localDirection.z *= blockSizeY;
+
+        targetLocalPosition += localDirection;
+        isMoving = true;
+    }
+
+    private void HandleMovement()
+    {
+        if (!isMoving && !reverting) return;
+
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetLocalPosition, moveSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.localPosition, targetLocalPosition) < 0.001f)
         {
-            transform.localPosition = Vector3.MoveTowards(transform.localPosition, targetLocalPosition, moveSpeed * Time.deltaTime);
-            
-            if (Vector3.Distance(transform.localPosition, targetLocalPosition) < 0.001f)
+            transform.localPosition = targetLocalPosition;
+
+            if (reverting)
             {
-                transform.localPosition = targetLocalPosition; // Garante alinhamento perfeito
-                isMoving = false;
+                reverting = false;
+                Debug.Log("Retornou à posição anterior.");
             }
+
+            isMoving = false;
         }
     }
 
-    public void MoveUp()
+    #endregion
+
+    #region Status
+
+    private void Electrify()
     {
-        if (!isMoving)
+        isElectrified = true;
+        Debug.Log("Furbot eletrificado!");
+    }
+
+    private void Wet()
+    {
+        isWet = true;
+        Debug.Log("Furbot molhado!");
+    }
+
+    private void ResetStatus()
+    {
+        isElectrified = false;
+        isWet = false;
+        Debug.Log("Status resetado.");
+    }
+
+    private bool IsDead() => isElectrified && isWet;
+
+    #endregion
+
+    #region Colisões
+
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (other.tag)
         {
-            targetLocalPosition += new Vector3(0, 0, blockSizeY);
-            isMoving = true;
+            case "Raio":
+                Electrify();
+                break;
+
+            case "Agua":
+                Wet();
+                break;
+
+            case "Conversao":
+                ResetStatus();
+                break;
+
+            case "Moeda":
+                Debug.Log("Fim de jogo!");
+                break;
+
+            case "Muro":
+                Debug.Log("Colidiu com o muro!");
+                CancelMoveAndRevert();
+                break;
+        }
+
+        if (IsDead())
+        {
+            Debug.Log("GAME OVER: Molhado + Eletrificado!");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
-    public void MoveDown()
+    private void CancelMoveAndRevert()
     {
-        if (!isMoving)
-        {
-            targetLocalPosition += new Vector3(0, 0, -blockSizeY);
-            isMoving = true;
-        }
+        // Volta para a última posição válida
+        targetLocalPosition = lastLocalPosition;
+        isMoving = true;
+        reverting = true;
     }
 
-    public void MoveLeft()
-    {
-        if (!isMoving)
-        {
-            targetLocalPosition += new Vector3(-blockSizeX, 0, 0);
-            isMoving = true;
-        }
-    }
-
-    public void MoveRight()
-    {
-        if (!isMoving)
-        {
-            targetLocalPosition += new Vector3(blockSizeX, 0, 0);
-            isMoving = true;
-        }
-    }
+    #endregion
 }
